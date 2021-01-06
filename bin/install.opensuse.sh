@@ -19,6 +19,9 @@ cd /tmp/ansible-repo && \
     git reset --hard origin/main && \
     git pull
 
+# Get ansible community
+echo "INFO - getting ansible community"
+ansible-galaxy collection install community.general
 
 # Run Ansible Playbook
 echo "INFO - Running playbook"
