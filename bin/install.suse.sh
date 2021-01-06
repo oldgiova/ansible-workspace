@@ -6,7 +6,7 @@ echo -e "\n\n"
 
 which ansible
 if [[ $? != 0 ]]; then
-    sudo zypper in -y ansible
+    sudo zypper in -y ansible git
 fi
 echo -e "\n\n"
 
@@ -14,7 +14,7 @@ echo -e "\n\n"
 echo "INFO - checking out this repo"
 git clone https://github.com/rgiovanardi/ansible-workspace.git \
     /tmp/ansible-repo 2>/dev/null
-cd /tmp/ansible-repo && git fetch && git reset --hard origin/master
+cd /tmp/ansible-repo && git fetch && git reset --hard origin/main
 
 
 # Run Ansible Playbook
