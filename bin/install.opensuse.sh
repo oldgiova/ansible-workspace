@@ -20,3 +20,4 @@ cd /tmp/ansible-repo && git fetch && git reset --hard origin/main
 # Run Ansible Playbook
 echo "INFO - Running playbook"
 echo -e "\n\n"
+ansible-playbook /tmp/ansible-repo/ansible/opensuse.yml -i 127.0.0.1,
