@@ -6,10 +6,10 @@
 
   vars:
     docker_compose_version: 1.27.4
-  
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Install the base required dependecies and suggest packages
-      community.general.zypper:
+      zypper:
         name: docker
         state: present
-        disable_reccomends: no
+        disable_recommends: no
