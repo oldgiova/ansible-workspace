@@ -14,7 +14,10 @@ echo -e "\n\n"
 echo "INFO - checking out this repo"
 git clone https://github.com/rgiovanardi/ansible-workspace.git \
     /tmp/ansible-repo 2>/dev/null
-cd /tmp/ansible-repo && git fetch && git reset --hard origin/main
+cd /tmp/ansible-repo && \
+    git fetch && \
+    git reset --hard origin/main && \
+    git pull
 
 
 # Run Ansible Playbook
