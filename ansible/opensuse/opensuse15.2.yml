@@ -8,8 +8,31 @@
     docker_compose_version: 1.27.4
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Install the base required dependecies and suggest packages
-      zypper:
+    - zypper:
         name: docker
         state: present
         disable_recommends: no
+    - zypper:
+        name: git
+        state: present
+        disable_recommends: no
+    - zypper:
+        name: curl
+        state: present
+        disable_recommends: no
+      
+    - name: Allow current user to execute docker commands
+      user: name={{ ansible_ssh_user }} groups=docker append=yes
+
+    - name: Check if docker-compose binary exists
+      stat: path=/usr/local/bin/docker-compose
+      register: docker_compose_bin
+
+    - name: Install docker-compose
+      shell: "curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"
+      when: not docker_compose_bin.stat.exists
+
+    - name: Install oh-my-zsh
+      shell: 
+      args:
+        cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
