@@ -8,15 +8,18 @@
     docker_compose_version: 1.27.4
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - zypper:
+    - name: zypper in docker
+      zypper:
         name: docker
         state: present
         disable_recommends: no
-    - zypper:
+    - name: zypper in git
+      zypper:
         name: git
         state: present
         disable_recommends: no
-    - zypper:
+    - name: zypper in curl
+      zypper:
         name: curl
         state: present
         disable_recommends: no
@@ -25,14 +28,31 @@
       user: name={{ ansible_ssh_user }} groups=docker append=yes
 
     - name: Check if docker-compose binary exists
-      stat: path=/usr/local/bin/docker-compose
+      stat: 
+        path: /usr/local/bin/docker-compose
       register: docker_compose_bin
 
     - name: Install docker-compose
       shell: "curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"
       when: not docker_compose_bin.stat.exists
 
-    - name: Install oh-my-zsh
-      shell: 
-      args:
-        cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    # - name: check if oh-my-zsh exists
+    #   stat: 
+    #     path: ~/.zshrc
+    #   register: oh_my_zshrc
+
+    # - name: Install oh-my-zsh
+    #   shell: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh 
+    #   when: not oh_my_zshrc.stat.isdir
+
+    - name: Check if asdf is installed
+      stat:
+        path: ~/.asdf/bin/asdf
+      register: asdf_bin
+
+    - name: Install asdf
+      shell: |
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+          cd ~/.asdf
+          git checkout "$(git describe --abbrev=0 --tags)"
+      when: not asdf_bin.stat.exists
