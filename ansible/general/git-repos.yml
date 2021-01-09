@@ -1,0 +1,10 @@
+- hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Clone rgiovanardi Home Monitor
+      git:
+        repo: git@github.com:rgiovanardi/home-monitor.git
+        dest: "{{ src_dir_rgiovanardi | default('~/src/github/rgiovanardi') }}/home-monitor"

@@ -1,9 +1,13 @@
 ---
 - hosts: 127.0.0.1
   connection: local
-  become: true
-  become_user: root
 
 - name: Importing playbook for OpenSUSE 15.2
   import_playbook: opensuse/opensuse15.2.yml
   when: ansible_distribution_version | regex_search('^(15.2)')
+
+- name: Importing git repos playbook
+  import_playbook: general/git-repos.yml
+
+- name: Importing tools playbook
+  import_playbook: general/tools.yml

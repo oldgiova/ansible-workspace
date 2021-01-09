@@ -35,24 +35,3 @@
     - name: Install docker-compose
       shell: "curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"
       when: not docker_compose_bin.stat.exists
-
-    # - name: check if oh-my-zsh exists
-    #   stat: 
-    #     path: ~/.zshrc
-    #   register: oh_my_zshrc
-
-    # - name: Install oh-my-zsh
-    #   shell: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh 
-    #   when: not oh_my_zshrc.stat.isdir
-
-    - name: Check if asdf is installed
-      stat:
-        path: ~/.asdf/bin/asdf
-      register: asdf_bin
-
-    - name: Install asdf
-      shell: |
-          git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-          cd ~/.asdf
-          git checkout "$(git describe --abbrev=0 --tags)"
-      when: not asdf_bin.stat.exists

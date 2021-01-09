@@ -1,0 +1,30 @@
+- hosts: 127.0.0.1
+  connection: local
+
+
+    # - name: check if oh-my-zsh exists
+    #   stat: 
+    #     path: ~/.zshrc
+    #   register: oh_my_zshrc
+
+    # - name: Install oh-my-zsh
+    #   shell: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh 
+    #   when: not oh_my_zshrc.stat.isdir
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Check if asdf is installed
+      stat:
+        path: ~/.asdf/bin/asdf
+      register: asdf_bin
+
+    - name: Install asdf
+      shell: |
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+          cd ~/.asdf
+          git checkout "$(git describe --abbrev=0 --tags)"
+
+          echo "plugins=(asdf)" >> ~/.zsrhc
+      when: not asdf_bin.stat.exists
+    
